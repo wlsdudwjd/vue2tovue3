@@ -10,81 +10,64 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'E07OptionsApi',
+<script setup>
+import { ref, computed, watch, onBeforeMount, onMounted, onBeforeUpdate, onUpdated, onBeforeUnmount, onUnmounted } from 'vue';
 
-  props: {
-    title: {
-      type: String,
-      default: 'User Information'
-    }
-  },
-
-  data() {
-    return {
-      firstName: 'John',
-      lastName: 'Doe',
-      greetCount: 0,
-      message: ''
-    };
-  },
-
-  computed: {
-    fullName() {
-      return `${this.firstName} ${this.lastName}`;
-    }
-  },
-
-  methods: {
-    greet() {
-      this.greetCount++;
-      this.message = `Hello, ${this.fullName}!`;
-    },
-    resetGreetCount() {
-      this.greetCount = 0;
-    }
-  },
-
-  watch: {
-    greetCount(newValue, oldValue) {
-      console.log(`Greet count changed from ${oldValue} to ${newValue}`);
-      if (newValue >= 3) {
-        this.message = "That's enough greetings for now!";
-      }
-    }
-  },
-
-  beforeCreate() {
-    console.log('beforeCreate hook');
-  },
-
-  created() {
-    console.log('created hook');
-  },
-
-  beforeMount() {
-    console.log('beforeMount hook');
-  },
-
-  mounted() {
-    console.log('mounted hook');
-  },
-
-  beforeUpdate() {
-    console.log('beforeUpdate hook');
-  },
-
-  updated() {
-    console.log('updated hook');
-  },
-
-  beforeUnmount() {
-    console.log('beforeUnmount hook');
-  },
-
-  unmounted() {
-    console.log('unmounted hook');
+const props = defineProps({
+  title: {
+    type: String,
+    default: 'User Information'
   }
-};
+});
+
+const firstName = ref('John');
+const lastName = ref('Doe');
+const greetCount = ref(0);
+const message = ref('');
+
+const fullName = computed(() => {
+  return `${firstName.value} ${lastName.value}`;
+});
+
+function greet() {
+  greetCount.value++;
+  message.value = `Hello, ${fullName.value}!`;
+}
+
+function resetGreetCount() {
+  greetCount.value = 0;
+}
+
+watch(greetCount, (newValue, oldValue) => {
+  console.log(`Greet count changed from ${oldValue} to ${newValue}`);
+  if (newValue >= 3) {
+    message.value = "That's enough greetings for now!";
+  }
+});
+
+console.log('setup hook (replaces beforeCreate/created)');
+
+onBeforeMount(() => {
+  console.log('onBeforeMount hook');
+});
+
+onMounted(() => {
+  console.log('onMounted hook');
+});
+
+onBeforeUpdate(() => {
+  console.log('onBeforeUpdate hook');
+});
+
+onUpdated(() => {
+  console.log('onUpdated hook');
+});
+
+onBeforeUnmount(() => {
+  console.log('onBeforeUnmount hook');
+});
+
+onUnmounted(() => {
+  console.log('onUnmounted hook');
+});
 </script>
